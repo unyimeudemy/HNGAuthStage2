@@ -1,5 +1,6 @@
 package com.HNG.userAuthStage2.config;
 
+import com.HNG.userAuthStage2.domain.entities.UserEntity;
 import com.HNG.userAuthStage2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,10 +9,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 @Configuration
 public class ApplicationConfig {
@@ -38,7 +42,17 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
+//        return username -> userRepository.findByEmail(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+
+//        return username -> {
+//            Optional<UserEntity> optionalUser = (Optional<UserEntity>) userRepository.findByEmail(username);
+//            return optionalUser.map(user -> (UserDetails) user)
+//                    .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+//        };
+
         return username -> userRepository.findByEmail(username)
+                .map(user -> (UserDetails) user)
                 .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
     }
 
@@ -46,8 +60,6 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
 
 }
 

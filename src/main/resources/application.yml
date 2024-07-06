@@ -1,18 +1,16 @@
-#spring.application.name=userAuthStage2
-
 
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-cq3u7jqju9rs739l83fg-a.oregon-postgres.render.com:5432/postgres
+    url: jdbc:postgresql://dpg-cq4l8v88fa8c73fre7rg-a.oregon-postgres.render.com:5432/postgres
     username: hngauth
-    password: r5A4HgvvPslOv4xvd0U0u5i4KAlq2Ibu
+    password: WDUI7X8aLsVDCpoOyJ2FpN0DTwH5jA42
     driverClassName: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
 
 

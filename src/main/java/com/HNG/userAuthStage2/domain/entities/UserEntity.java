@@ -13,9 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.validation.constraints.*;
 
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
 @Table(name = "_user")
 public class UserEntity implements UserDetails{
 
-    private Set<String> permissions;
+    private Set<String> permissions =  new HashSet<>();;
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -63,9 +61,24 @@ public class UserEntity implements UserDetails{
     @Column(name = "phone")
     private String phone;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_organization",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "orgId")
+    )
+    private Set<OrganizationEntity> organizations = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return permissions.stream()
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList());
+
+        if (permissions == null) {
+            permissions = new HashSet<>();
+        }
         return permissions.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -95,4 +108,29 @@ public class UserEntity implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(userId, that.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId='" + userId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
 }
+
