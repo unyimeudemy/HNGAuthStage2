@@ -9,4 +9,4 @@ FROM openjdk:17-alpine
 WORKDIR /app
 COPY --from=build /app/target/userAuthStage2-0.0.1-SNAPSHOT.jar ./userAuthStage2.jar
 EXPOSE 8080
-CMD ["java", "-jar", "solidid.jar"]
+CMD ["java", "-jar", "userAuthStage2.jar"]
