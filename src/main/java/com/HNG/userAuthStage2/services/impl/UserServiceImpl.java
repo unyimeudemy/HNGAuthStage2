@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
 
         } catch (DataAccessException e) {
-            System.out.println("================= userservice ====================");
+            System.out.println("======== auth exception ============" + e.getMessage());
             return Optional.of(ErrorResponseDto.builder()
                     .status("Bad request")
                     .message("Registration unsuccessful")

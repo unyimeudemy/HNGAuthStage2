@@ -122,8 +122,8 @@ public class OrganizationController {
         if (addUserToOrgRes.isPresent()) {
             Object responseObject = addUserToOrgRes.get();
 
-            if (responseObject instanceof OrganisationResponseDto orgResponse) {
-                return new ResponseEntity<>(orgResponse, HttpStatus.OK);
+            if (responseObject instanceof AddUserToOrgResponseDto response) {
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 ErrorResponseDto error = (ErrorResponseDto) responseObject;
                 return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

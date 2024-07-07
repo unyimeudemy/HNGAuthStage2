@@ -43,6 +43,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userEmail;
         final String authHeader = request.getHeader("Authorization");
 
+//        if(request.getRequestURI().startsWith("/keepAlive")){
+//            System.out.println("============= keep alive ==============");
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")){
             System.out.println("=============auth endpoint================");
@@ -50,10 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-//        if(request.getRequestURI().startsWith("/api")){
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+
 
         jwt = authHeader.substring(7);
         System.out.println("======================" + jwt);
