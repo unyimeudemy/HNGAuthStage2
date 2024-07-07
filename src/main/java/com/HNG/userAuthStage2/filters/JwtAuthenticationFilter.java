@@ -45,19 +45,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            System.out.println("=============auth endpoint================");
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(request.getRequestURI().startsWith("/api")){
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if(request.getRequestURI().startsWith("/api")){
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         jwt = authHeader.substring(7);
+        System.out.println("======================" + jwt);
+
         userEmail = jwtServiceImpl.extractUsername(jwt);
+        System.out.println("===================" + userEmail);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            System.out.println("+++++++++++++++++++++++++");
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+            System.out.println("+++++++++++++++++++++++++" + userDetails);
+
 
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
@@ -68,9 +75,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authToken);
+            System.out.println("+++++++++++++last++++++++++++" + authToken);
+
         }
 
         filterChain.doFilter(request, response);
+        System.out.println("============filter done======================");
 
     }
 }

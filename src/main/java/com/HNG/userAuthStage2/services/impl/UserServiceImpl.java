@@ -3,11 +3,13 @@ package com.HNG.userAuthStage2.services.impl;
 import com.HNG.userAuthStage2.domain.dtos.AuthResponseDto;
 import com.HNG.userAuthStage2.domain.dtos.ErrorResponseDto;
 import com.HNG.userAuthStage2.domain.dtos.LoginRequestDto;
+import com.HNG.userAuthStage2.domain.dtos.UserProfileDto;
 import com.HNG.userAuthStage2.domain.entities.OrganizationEntity;
 import com.HNG.userAuthStage2.domain.entities.UserEntity;
 import com.HNG.userAuthStage2.repository.OrganizationRepository;
 import com.HNG.userAuthStage2.repository.UserRepository;
 import com.HNG.userAuthStage2.services.JwtServiceImpl;
+//import org.apache.el.stream.Optional;
 import com.HNG.userAuthStage2.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +34,13 @@ public class UserServiceImpl implements UserService {
 
     private final OrganizationRepository organizationRepository;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, JwtServiceImpl jwtServiceimpl, AuthenticationManager authenticationManager, UserRepository userRepository, OrganizationRepository organizationRepository) {
+    public UserServiceImpl(
+            PasswordEncoder passwordEncoder,
+            JwtServiceImpl jwtServiceimpl,
+            AuthenticationManager authenticationManager,
+            UserRepository userRepository,
+            OrganizationRepository organizationRepository
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.jwtServiceimpl = jwtServiceimpl;
         this.authenticationManager = authenticationManager;
@@ -154,6 +162,32 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
     }
+
+    @Override
+    public Optional<?> findByUserId(String userId) {
+        try{
+            var user = userRepository.findByUserId(userId);
+            return Optional.of(
+                    UserProfileDto.builder()
+                            .status("success")
+                            .message("user profile found")
+                            .data(UserProfileDto.Data.builder()
+                                    .lastName(user.get().getLastName())
+                                    .email(user.get().getEmail())
+                                    .phone(user.get().getPhone())
+                                    .build())
+                            .build()
+            );
+        }catch (Exception e){
+            System.out.println("==========================" + e.getMessage());
+            return Optional.of(ErrorResponseDto.builder()
+                    .status("Not found")
+                    .message("User not found")
+                    .statusCode(404)
+                    .build());
+        }
+    }
+
 
 }
 

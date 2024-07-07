@@ -1,6 +1,5 @@
 package com.HNG.userAuthStage2.services;
 
-import com.HNG.userAuthStage2.domain.dtos.AuthResponseDto;
 import com.HNG.userAuthStage2.domain.dtos.LoginRequestDto;
 import com.HNG.userAuthStage2.domain.entities.UserEntity;
 import org.springframework.stereotype.Service;
@@ -16,4 +15,7 @@ public interface UserService {
     Optional<?> findByEmail(String email);
 
     Optional<?> login(LoginRequestDto loginRequestDto);
+
+    Optional<?> findByUserId(String userId);
+
 }
