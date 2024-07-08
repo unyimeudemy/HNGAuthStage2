@@ -157,8 +157,8 @@ public class UserServiceImpl implements UserService {
             System.out.println("===========================>" + e.getMessage());
             return Optional.of(ErrorResponseDto.builder()
                     .status("Bad request")
-                    .message("Registration unsuccessful")
-                    .statusCode(400)
+                    .message("Authentication failed")
+                    .statusCode(401)
                     .build());
         }
     }

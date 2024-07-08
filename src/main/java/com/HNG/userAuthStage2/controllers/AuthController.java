@@ -1,10 +1,7 @@
 package com.HNG.userAuthStage2.controllers;
 
 
-import com.HNG.userAuthStage2.domain.dtos.ErrorResponseDto;
-import com.HNG.userAuthStage2.domain.dtos.FieldValidationError;
-import com.HNG.userAuthStage2.domain.dtos.LoginRequestDto;
-import com.HNG.userAuthStage2.domain.dtos.UserDto;
+import com.HNG.userAuthStage2.domain.dtos.*;
 import com.HNG.userAuthStage2.domain.entities.UserEntity;
 import com.HNG.userAuthStage2.mappers.Mapper;
 import com.HNG.userAuthStage2.services.UserService;
@@ -83,8 +80,30 @@ public class AuthController {
 
     @PostMapping(path = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto){
-        Optional<?> signedInUser = userService.login(loginRequestDto);
-        return  new ResponseEntity<>(signedInUser, HttpStatus.OK);
+        Optional<?> user = userService.login(loginRequestDto);
+
+        if (user.isPresent()) {
+            Object responseObject = user.get();
+
+            if (responseObject instanceof AuthResponseDto) {
+                AuthResponseDto loggedUser = (AuthResponseDto) responseObject;
+                return new ResponseEntity<>(loggedUser, HttpStatus.OK);
+            } else {
+                ErrorResponseDto error = (ErrorResponseDto) responseObject;
+                return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            ErrorResponseDto error = ErrorResponseDto.builder()
+                    .status("Bad request")
+                    .message("Authentication failed")
+                    .statusCode(401)
+                    .build();
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+
+
+
+
     }
 
 }
