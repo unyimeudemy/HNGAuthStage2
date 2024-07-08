@@ -172,6 +172,7 @@ public class UserServiceImpl implements UserService {
                             .status("success")
                             .message("user profile found")
                             .data(UserProfileDto.Data.builder()
+                                    .userId(userId)
                                     .lastName(user.get().getLastName())
                                     .email(user.get().getEmail())
                                     .phone(user.get().getPhone())

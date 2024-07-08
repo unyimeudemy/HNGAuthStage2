@@ -20,6 +20,7 @@ public class UserProfileDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Data {
+        private String userId;
         private String lastName;
         private String email;
         private String phone;
