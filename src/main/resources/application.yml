@@ -1,9 +1,9 @@
 
 spring:
   datasource:
-    url: ${db_url}
-    username: ${db_username}
-    password: ${db_password}
+    url: jdbc:postgresql://dpg-cq4l8v88fa8c73fre7rg-a.oregon-postgres.render.com:5432/postgres
+    username: hngauth
+    password: WDUI7X8aLsVDCpoOyJ2FpN0DTwH5jA42
     driverClassName: org.postgresql.Driver
   jpa:
     properties:
