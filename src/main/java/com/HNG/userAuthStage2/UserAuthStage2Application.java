@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UserAuthStage2Application {
 
 	public static void main(String[] args) {
+		System.getenv("DB_USERNAME");
 		SpringApplication.run(UserAuthStage2Application.class, args);
 	}
 
