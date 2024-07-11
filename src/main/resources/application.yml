@@ -27,6 +27,9 @@ spring:
       ddl-auto: update
     show-sql: true
 
+server:
+  port: ${PORT:8080}
+
 #spring:
 #  datasource:
 #    url: jdbc:postgresql://roundhouse.proxy.rlwy.net:25564/postgres
